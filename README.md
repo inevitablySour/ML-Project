@@ -29,14 +29,4 @@ pip install -r requirements.txt
 - **.gitignore:** Do not commit your `venv` folder or data files.
 - **requirements.txt:** After installing new packages, run `pip freeze > requirements.txt` and commit the changes.
 
-## Folder Structure initially
-```
-project-folder/ 
-│
-├── src/            # Source code
-├── data/           # Data files (not tracked by git)
-├── notebooks/      # Jupyter notebooks
-├── requirements.txt
-├── .gitignore
-└── README.md
-```
+Ive created a file with the data summary that you can feed to an llm to get more insights into the data if you want in here [Data Summary LLM](data_summary.md)
