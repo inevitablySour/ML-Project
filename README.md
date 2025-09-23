@@ -4,7 +4,7 @@ This document outlines the steps, tasks, and responsibilities for the group proj
 
 ---
 
-## Step 1: Business Understanding
+## Step 1: Business Understanding (Not Graded)
 **Goal:** Understand CAICLE’s needs and define the machine learning problem clearly.  
 
 **Tasks:**
@@ -19,7 +19,7 @@ This document outlines the steps, tasks, and responsibilities for the group proj
 
 ---
 
-## Step 2: Data Understanding
+## Step 2: Data Understanding (The rest is graded)
 **Goal:** Explore the provided race result dataset.  
 
 **Tasks:**
