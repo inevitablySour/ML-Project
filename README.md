@@ -115,6 +115,18 @@ This document outlines the steps, tasks, and responsibilities for the group proj
 | 5. Evaluation | Hyperparameter tuning, metrics | Optimize models, compare results, summarize performance in business terms |
 | 6. Deployment & Presentation | Build pipeline, demo, report | Implement pipeline, prepare final report and slides, present results and insights |
 
+## Optional features to get a 10 ranked in order of importance
+1. Suggested Priorities for Maximum Impact
+
+2. Build a deployable pipeline that can take new rider data.
+
+3. Include explainable AI elements (SHAP/LIME) to show insights.
+
+4. Create interactive visualizations or dashboards for stakeholders.
+
+5. Add advanced evaluation metrics to show robustness.
+
+6. Experiment with ensembles or stacking to improve predictions.
 
 ## Getting Started with adding code and git(for teammates)
 
