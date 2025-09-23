@@ -43,3 +43,6 @@ Thumbs.db
 
 # whole data folder
 data/
+
+# project plans
+project_plans_etc/
