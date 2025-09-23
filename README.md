@@ -147,3 +147,18 @@ pip install -r requirements.txt
 - **requirements.txt:** After installing new packages, run `pip freeze > requirements.txt` and commit the changes.
 
 Ive created a file with the data summary that you can feed to an llm to get more insights into the data if you want in here [Data Summary LLM](data_summary.md)
+
+## Usefull docs for teammates
+- choosing the right model map:
+https://scikit-learn.org/stable/machine_learning_map.html
+- overview of supervised models:
+https://scikit-learn.org/stable/supervised_learning.html
+- choosing right model and evaluation:
+https://scikit-learn.org/stable/model_selection.html
+- data preprocessing scaling etc data prep:
+https://scikit-learn.org/stable/modules/preprocessing.html
+- pipelines and composite estimators:
+https://scikit-learn.org/stable/modules/compose.html#pipeline
+
+### EASY ML EXPLANATIONS IF YOU DONT UNDERSTAND:
+https://www.youtube.com/@statquest
