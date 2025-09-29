@@ -1,0 +1,64 @@
+Folder PATH listing for volume Windows
+Volume serial number is 7029-998B
+C:.
+|   .gitignore
+|   LICENSE
+|   project_tree.txt
+|   README.md
+|   requirements.txt
+|   
++---data
+|   |   cycling_big.db
+|   |   make_data.ipynb
+|   |   
+|   +---.vscode
+|   |       settings.json
+|   |       
+|   +---data
+|   |   |   rider_infos.csv
+|   |   |   rider_urls.csv
+|   |   |   
+|   |   +---results
+|   |   |       Results2012CatWT.csv
+|   |   |       Results2014CatWT.csv
+|   |   |       Results2015CatWT.csv
+|   |   |       Results2016CatWT.csv
+|   |   |       Results2017CatWT.csv
+|   |   |       Results2018CatWT.csv
+|   |   |       Results2019CatWT.csv
+|   |   |       Results2020CatWT.csv
+|   |   |       Results2021CatWT.csv
+|   |   |       
+|   |   \---team_urls
+|   |           team_urls_2012.csv
+|   |           team_urls_2013.csv
+|   |           team_urls_2014.csv
+|   |           team_urls_2015.csv
+|   |           team_urls_2016.csv
+|   |           team_urls_2017.csv
+|   |           team_urls_2018.csv
+|   |           team_urls_2019.csv
+|   |           
+|   \---tests
+|       |   test_hello.py
+|       |   
+|       \---__pycache__
+|               test_hello.cpython-312-pytest-8.4.2.pyc
+|               
++---data_summary
+|       data_summary.md
+|       first_analyze.ipynb
+|       
++---notebooks
+|       business.ipynb
+|       cycling_big.db
+|       data_prep.ipynb
+|       data_understanding.ipynb
+|       deployemeny.ipynb
+|       eval.ipynb
+|       model.ipynb
+|       
+\---project_plans_etc
+        ACTIONPLAN_ML.docx
+        PROJECT_DESC_SUM.docx
+        
