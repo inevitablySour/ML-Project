@@ -1,48 +1,48 @@
-# # Byte-compiled / optimized / DLL files
-# __pycache__/
-# *.py[cod]
-# *$py.class
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
 
-# # Jupyter Notebook checkpoints
-# .ipynb_checkpoints
+# Jupyter Notebook checkpoints
+.ipynb_checkpoints
 
-# # Virtual environment
-# env/
-# venv/
-# ENV/
-# .venv/
+# Virtual environment
+env/
+venv/
+ENV/
+.venv/
 
-# # VS Code settings
-# .vscode/
+# VS Code settings
+.vscode/
 
-# # Data files
-# *.csv
-# *.tsv
-# *.xls
-# *.xlsx
-# *.h5
-# *.db
+# Data files
+*.csv
+*.tsv
+*.xls
+*.xlsx
+*.h5
+*.db
 
-# # Model files
-# *.pkl
-# *.joblib
-# *.hdf5
+# Model files
+*.pkl
+*.joblib
+*.hdf5
 
-# # OS files
-# .DS_Store
-# Thumbs.db
+# OS files
+.DS_Store
+Thumbs.db
 
-# # Logs
-# *.log
+# Logs
+*.log
 
-# # OneDrive temp files
-# ~$*
+# OneDrive temp files
+~$*
 
-# # Other
-# *.bak
+# Other
+*.bak
 
-# # whole data folder
-# data/
+# whole data folder
+data/
 
-# # project plans
-# project_plans_etc/
+# project plans
+project_plans_etc/
