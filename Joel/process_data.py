@@ -298,7 +298,7 @@ print("="*60)
 if len(missing_pct) > 0:
     print(missing_pct)
 else:
-    print("✅ No missing values!")
+    print("No missing values!")
 
 print("\n" + "="*60)
 print("DATASET SUMMARY")
