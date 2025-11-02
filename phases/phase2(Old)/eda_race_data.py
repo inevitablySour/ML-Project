@@ -16,7 +16,7 @@ sns.set_style("whitegrid")
 
 # %%
 # Load data
-data_path = "../../Joel/processed_data/race_data_processed_v3.csv"
+data_path = "../phase2/processed_data/race_data_processed_v3.csv"
 df = pd.read_csv(data_path, parse_dates=['Date','birthdate'])
 print(f"Data shape: {df.shape}")
 df.head()

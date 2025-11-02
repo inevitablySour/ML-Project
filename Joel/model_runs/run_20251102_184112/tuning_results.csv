@@ -1,4 +1,0 @@
-Model,Best_CV_Score,Best_Params
-Logistic Regression,0.7466992533425115,"{'C': 1.0, 'class_weight': 'balanced', 'solver': 'lbfgs'}"
-Random Forest,0.9553548524213036,"{'class_weight': 'balanced', 'max_depth': 20, 'min_samples_leaf': 10, 'min_samples_split': 50, 'n_estimators': 200}"
-Gradient Boosting,0.985396589535125,"{'learning_rate': 0.2, 'max_depth': 5, 'min_samples_split': 100, 'n_estimators': 200, 'subsample': 1.0}"

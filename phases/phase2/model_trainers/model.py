@@ -38,7 +38,7 @@ print(f"   Train: {X_train.shape[0]:,} samples × {X_train.shape[1]} features")
 print(f"   Test:  {X_test.shape[0]:,} samples × {X_test.shape[1]} features")
 
 # ============================================================================
-# 2. FEATURE SELECTION (OPTIONAL - reduce dimensionality)
+# FEATURE SELECTION (reduce dimensionality)
 # ============================================================================
 print("\n[2/5] Feature selection analysis...")
 

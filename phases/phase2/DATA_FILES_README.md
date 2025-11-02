@@ -31,7 +31,7 @@ Then select:
 
 #### Step 1: Prepare Training Data
 ```bash
-cd Joel/data_preperation
+cd phase2/data_preperation
 python process_data.py      # Creates processed_data/race_data_processed.csv
 python ML_prepare.py         # Creates training_data/train_data.csv & test_data.csv
 ```

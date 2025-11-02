@@ -100,8 +100,8 @@ def data_preparation_menu():
     
     # Check for required data files
     print_section("Checking Data Files")
-    db_exists = check_file_exists("../data/cycling_big.db", "SQLite database")
-    csv_exists = check_file_exists("../data/data/rider_infos.csv", "Rider info CSV")
+    db_exists = check_file_exists("../../data/cycling_big.db", "SQLite database")
+    csv_exists = check_file_exists("../../data/data/rider_infos.csv", "Rider info CSV")
     
     if not (db_exists or csv_exists):
         print_error("Required data files not found. Please ensure data is in ../data/ directory.")
@@ -249,8 +249,8 @@ def show_project_status():
     
     # Data files
     print_section("Data Files")
-    check_file_exists("../data/cycling_big.db", "Raw SQLite database")
-    check_file_exists("../data/data/rider_infos.csv", "Rider information CSV")
+    check_file_exists("../../data/cycling_big.db", "Raw SQLite database")
+    check_file_exists("../../data/data/rider_infos.csv", "Rider information CSV")
     check_file_exists("processed_data/race_data_processed.csv", "Processed race data")
     check_file_exists("training_data/train_data.csv", "Training data")
     check_file_exists("training_data/test_data.csv", "Test data")
