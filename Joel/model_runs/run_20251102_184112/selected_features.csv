@@ -1,0 +1,26 @@
+feature
+Length_km
+pps_One day races
+pps_GC
+pps_Time trial
+pps_Sprint
+pps_Climber
+rdr_PCS Ranking
+rdr_UCI World Ranking
+rdr_Specials | All Time Ranking
+UCI_total
+UCI_avg
+UCI_max
+UCI_std
+UCI_points_per_race
+Pnt_avg
+Pnt_race_count
+Pnt_points_per_race
+age_at_race
+race_tier
+rolling_avg_rank_5
+rolling_avg_rank_10
+recent_top10_count
+recent_top10_rate
+Team_encoded
+Race_Name_encoded

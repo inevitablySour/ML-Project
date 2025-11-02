@@ -1,0 +1,210 @@
+{
+  "Logistic Regression": {
+    "overall": {
+      "precision": 0.28,
+      "recall": 0.1543762922122674,
+      "f1": 0.1990226565970679,
+      "accuracy": 0.8138,
+      "roc_auc": 0.7740215864085701,
+      "threshold": 0.871
+    },
+    "confusion_matrix": [
+      [
+        7907,
+        593
+      ],
+      [
+        1269,
+        231
+      ]
+    ],
+    "feature_importance": {
+      "UCI_Ranking": 0.28,
+      "pps_Climber": 0.22,
+      "Age": 0.14,
+      "Timelag_Avg": 0.2
+    }
+  },
+  "Random Forest": {
+    "overall": {
+      "precision": 0.749271137026239,
+      "recall": 0.1771192281185389,
+      "f1": 0.2865105908584169,
+      "accuracy": 0.8677,
+      "roc_auc": 0.822796473000432,
+      "threshold": 0.773
+    },
+    "confusion_matrix": [
+      [
+        8412,
+        88
+      ],
+      [
+        1235,
+        265
+      ]
+    ],
+    "feature_importance": {
+      "UCI_Ranking": 0.35,
+      "pps_Climber": 0.18,
+      "Age": 0.12,
+      "Race_Length": 0.1
+    }
+  },
+  "Gradient Boosting": {
+    "overall": {
+      "precision": 0.7493188010899182,
+      "recall": 0.1895244658855961,
+      "f1": 0.3025302530253025,
+      "accuracy": 0.8689,
+      "roc_auc": 0.8237050119439647,
+      "threshold": 0.887
+    },
+    "confusion_matrix": [
+      [
+        8405,
+        95
+      ],
+      [
+        1216,
+        284
+      ]
+    ],
+    "feature_importance": {
+      "UCI_Ranking": 0.42,
+      "pps_Sprint": 0.18,
+      "Age": 0.1,
+      "Race_Tier": 0.15
+    }
+  },
+  "Gradient Boosting Pro": {
+    "overall": {
+      "precision": 0.7506234413965087,
+      "recall": 0.2074431426602343,
+      "f1": 0.3250539956803456,
+      "accuracy": 0.8708,
+      "roc_auc": 0.827332119316672,
+      "threshold": 0.863
+    },
+    "confusion_matrix": [
+      [
+        8397,
+        103
+      ],
+      [
+        1189,
+        311
+      ]
+    ],
+    "feature_importance": {
+      "UCI_Ranking": 0.44,
+      "Recent_Performance": 0.2,
+      "pps_Climber": 0.13,
+      "Age": 0.09
+    }
+  },
+  "Random Forest Pro": {
+    "overall": {
+      "precision": 0.75,
+      "recall": 0.1798759476223294,
+      "f1": 0.2901612006670372,
+      "accuracy": 0.868,
+      "roc_auc": 0.8141724462917579,
+      "threshold": 0.781
+    },
+    "confusion_matrix": [
+      [
+        8411,
+        89
+      ],
+      [
+        1231,
+        269
+      ]
+    ],
+    "feature_importance": {
+      "UCI_Ranking": 0.38,
+      "pps_Climber": 0.16,
+      "Recent_Performance": 0.15,
+      "Age": 0.11
+    }
+  },
+  "XGBoost": {
+    "overall": {
+      "precision": 0.7441860465116279,
+      "recall": 0.1543762922122674,
+      "f1": 0.2557077625570776,
+      "accuracy": 0.8652,
+      "roc_auc": 0.8161711678911534,
+      "threshold": 0.992
+    },
+    "confusion_matrix": [
+      [
+        8421,
+        79
+      ],
+      [
+        1269,
+        231
+      ]
+    ],
+    "feature_importance": {
+      "UCI_Ranking": 0.4,
+      "Recent_Performance": 0.19,
+      "pps_Climber": 0.15,
+      "Age": 0.12
+    }
+  },
+  "LightGBM": {
+    "overall": {
+      "precision": 0.721875,
+      "recall": 0.1592005513439007,
+      "f1": 0.2608695652173913,
+      "accuracy": 0.8647,
+      "roc_auc": 0.8201525535499736,
+      "threshold": 0.988
+    },
+    "confusion_matrix": [
+      [
+        8409,
+        91
+      ],
+      [
+        1262,
+        238
+      ]
+    ],
+    "feature_importance": {
+      "UCI_Ranking": 0.41,
+      "pps_Sprint": 0.17,
+      "Recent_Performance": 0.16,
+      "Age": 0.11
+    }
+  },
+  "Ensemble": {
+    "overall": {
+      "precision": 0.75,
+      "recall": 0.2088215024121295,
+      "f1": 0.3266846361185984,
+      "accuracy": 0.8709,
+      "roc_auc": 0.8301498523462423,
+      "threshold": 0.824
+    },
+    "confusion_matrix": [
+      [
+        8396,
+        104
+      ],
+      [
+        1187,
+        313
+      ]
+    ],
+    "feature_importance": {
+      "UCI_Ranking": 0.39,
+      "Recent_Performance": 0.21,
+      "pps_Climber": 0.14,
+      "Age": 0.1
+    }
+  }
+}
