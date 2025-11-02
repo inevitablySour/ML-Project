@@ -6,6 +6,7 @@ Includes feature selection and model comparison
 
 import pandas as pd
 import numpy as np
+from pathlib import Path
 from sklearn.linear_model import LogisticRegression
 from sklearn.ensemble import RandomForestClassifier, GradientBoostingClassifier
 from sklearn.metrics import (
@@ -17,6 +18,10 @@ import joblib
 import warnings
 warnings.filterwarnings('ignore')
 
+# Get paths relative to script location
+script_dir = Path(__file__).parent
+phase2_dir = script_dir.parent
+
 print("="*70)
 print("ML MODEL TRAINING PIPELINE")
 print("="*70)
@@ -25,8 +30,10 @@ print("="*70)
 # 1. LOAD DATA
 # ============================================================================
 print("\n[1/5] Loading preprocessed data...")
-X_train = pd.read_csv('../training_data/train_data.csv')
-X_test = pd.read_csv('../training_data/test_data.csv')
+train_path = phase2_dir / 'training_data' / 'train_data.csv'
+test_path = phase2_dir / 'training_data' / 'test_data.csv'
+X_train = pd.read_csv(train_path)
+X_test = pd.read_csv(test_path)
 
 y_train = X_train['is_top_10']
 X_train = X_train.drop('is_top_10', axis=1)
@@ -68,8 +75,10 @@ if USE_FEATURE_SELECTION:
     X_test_final = pd.DataFrame(X_test_selected, columns=selected_features)
 
     # Save selected features
+    output_dir = phase2_dir / 'processed_data'
+    output_dir.mkdir(parents=True, exist_ok=True)
     pd.DataFrame({'feature': selected_features}).to_csv(
-        '../processed_data/selected_features.csv', index=False
+        output_dir / 'selected_features.csv', index=False
     )
 else:
     print(f"   Using all {X_train.shape[1]} features")
@@ -136,7 +145,9 @@ for name, model in models.items():
 
     # Save model
     trained_models[name] = model
-    joblib.dump(model, f'models/{name.replace(" ", "_").lower()}_model.pkl')
+    models_dir = phase2_dir / 'models'
+    models_dir.mkdir(parents=True, exist_ok=True)
+    joblib.dump(model, models_dir / f'{name.replace(" ", "_").lower()}_model.pkl')
 
     print(f"      ✓ Precision: {precision:.3f} | Recall: {recall:.3f} | F1: {f1:.3f} | ROC-AUC: {roc_auc:.3f}")
 
@@ -161,7 +172,9 @@ else:
     print(f"    Below 75% target - consider hyperparameter tuning")
 
 # Save comparison
-results_df.to_csv('processed_data/model_comparison.csv', index=False)
+processed_dir = phase2_dir / 'processed_data'
+processed_dir.mkdir(parents=True, exist_ok=True)
+results_df.to_csv(processed_dir / 'model_comparison.csv', index=False)
 
 # ============================================================================
 # 5. FEATURE IMPORTANCE (for best tree-based model)
@@ -190,7 +203,7 @@ if tree_models:
         print(f"      {row['feature']:40s} {row['importance']:.4f}")
 
     # Save feature importance
-    feature_importance_df.to_csv('processed_data/feature_importance.csv', index=False)
+    feature_importance_df.to_csv(processed_dir / 'feature_importance.csv', index=False)
 
 # ============================================================================
 # FINAL SUMMARY

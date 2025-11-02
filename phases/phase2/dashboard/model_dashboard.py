@@ -4,6 +4,7 @@ import plotly.graph_objects as go
 import plotly.express as px
 from plotly.subplots import make_subplots
 import json
+from pathlib import Path
 
 # Page config
 st.set_page_config(
@@ -28,9 +29,11 @@ def load_model_results():
         }
     }
     """
-    # Load from file
+    # Load from file - use path relative to this script
     try:
-        with open('model_results.json', 'r') as f:
+        script_dir = Path(__file__).parent
+        json_path = script_dir / 'model_results.json'
+        with open(json_path, 'r') as f:
             return json.load(f)
     except FileNotFoundError:
         # Demo data if file doesn't exist
@@ -209,7 +212,7 @@ if selected_models:
                            f"({feat_df.iloc[-1]['Importance']:.2%})")
     
     # Business Context
-    st.header("💼 Business Impact")
+    st.header("Business Impact")
     
     col1, col2 = st.columns(2)
     

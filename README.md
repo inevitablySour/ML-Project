@@ -1,11 +1,155 @@
-# MA01 Machine Learning Group Project - CAICLE
+# CAICLE Cycling ML Project - Rider Performance Prediction
 
-This document outlines the steps, tasks, and responsibilities for the group project focused on predicting professional cycling performance for CAICLE.
+**Machine Learning for Professional Cycling Recruitment**
+
+This project uses machine learning to predict whether a professional cyclist will finish in the **top 10** of a race, helping CAICLE investment firm make data-driven multi-million dollar recruitment decisions for their professional cycling "super team".
+
+## Project Goal
+
+**Problem**: Binary classification to predict top-10 finishers  
+**Success Criteria**: Precision > 75% for "Top 10 Finisher" class  
+**Why Precision**: Minimize false positives (bad investments) while maintaining reasonable recall to avoid missing breakthrough talent
 
 ---
 
-## Step 1: Business Understanding (Not Graded)
-**Goal:** Understand CAICLE’s needs and define the machine learning problem clearly.  
+## Repository Structure
+
+Top-level overview. Phase 2 contains the working pipeline you will use.
+
+```
+ML-Project/
+├── data/                      # Raw data (gitignored)
+│   ├── cycling_big.db        # SQLite database with 225k+ results
+│   └── data/
+│       └── rider_infos.csv   # 1042 riders with stats & profiles
+├── phases/
+│   ├── phase1/               # Business understanding & data exploration
+│   └── phase2/               # Data preparation, modelling, dashboard (active)
+│       ├── data_preperation/ # Scripts to process & prepare data
+│       ├── model_trainers/   # Model training pipelines
+│       ├── dashboard/        # Streamlit dashboard & tools
+│       ├── processed_data/   # Output: cleaned dataset
+│       ├── training_data/    # Output: ML-ready datasets
+│       ├── models/           # Output: baseline models (.pkl)
+│       └── model_runs/       # Output: versioned tuned runs
+├── data_summary/             # Data dictionary and analysis
+├── notebooks/                # Notebooks (exploration & analysis)
+├── project_brief/            # Client brief and presentation artifacts
+├── requirements.txt          # Python dependencies (pin as needed)
+└── README.md
+```
+
+## Quickstart
+
+1) Create venv and install deps
+```bash
+python -m venv .venv
+source .venv/bin/activate   # Windows: .venv\Scripts\activate
+pip install -r requirements.txt
+```
+
+2) Run the Phase 2 main dashboard
+```bash
+cd phases/phase2
+python main_dashboard.py
+```
+This interactive CLI orchestrates data prep, model training, comparisons, and opens the dashboard.
+
+## Phase 2 Components (Active)
+
+- data_preperation/
+  - process_data.py
+    - Reads raw data from ../../data/
+    - Cleans dates/times, parses nested pps/rdr dicts, engineers leakage-safe features
+    - Writes processed_data/race_data_processed.csv
+  - ML_prepare.py
+    - Loads processed dataset, encodes categoricals, temporal split, SMOTE, scaling
+    - Writes training_data/{train_data.csv,test_data.csv,feature_names.csv,scaler.pkl}
+  - validate_no_leakage.py
+    - Validates temporal features (rolling excludes current race), correlations, and static-feature baseline
+  - check_leakage.py
+    - Forensic check of Pnt features for leakage (rank monotonicity, thresholds)
+
+- model_trainers/
+  - model.py (Baseline)
+    - Trains Logistic Regression, Random Forest, Gradient Boosting
+    - Writes models/*.pkl and processed_data/{comparison,feature_importance}.csv
+  - model_tuned.py (Recommended)
+    - GridSearchCV + threshold optimization to hit Precision ~75%
+    - Writes versioned run in model_runs/run_YYYYMMDD_HHMMSS/
+  - model_advanced.py (Optional)
+    - Adds XGBoost/LightGBM and ensembles if installed
+
+- dashboard/
+  - compare_runs.py
+    - Aggregates model_runs into a consolidated comparison CSV
+  - convert_results_to_dashboard.py
+    - Converts comparison CSV to model_results.json
+  - model_dashboard.py (Streamlit)
+    - Interactive visualization of metrics, thresholds, recommendations
+
+## Data Leakage Guardrails
+
+We prioritize correctness over inflated metrics.
+- Temporal split by date (no random shuffle on time data)
+- Rolling features use past races only (shift before roll)
+- Drop/avoid post-race features (e.g., current-race points)
+- validate_no_leakage.py and check_leakage.py must pass before training
+
+## Target & Metrics
+
+- Primary: Precision (target > 75%)
+- Secondary: Recall (reasonable to avoid missing talent)
+- Also track ROC-AUC and feature importance
+- Threshold optimization used to trade precision vs recall
+
+## Typical Workflow
+
+```bash
+cd phases/phase2
+# 1) Data preparation
+python data_preperation/process_data.py
+python data_preperation/ML_prepare.py
+python data_preperation/validate_no_leakage.py
+
+# 2) Train models
+python model_trainers/model_tuned.py
+
+# 3) Compare & visualize
+python dashboard/compare_runs.py
+python dashboard/convert_results_to_dashboard.py
+streamlit run dashboard/model_dashboard.py
+```
+
+Or use: `python main_dashboard.py` for an end-to-end menu-driven flow.
+
+## Large Files Policy
+
+- CSV and PKL are gitignored. Regenerate via scripts.
+- See `phases/phase2/DATA_FILES_README.md` for regeneration instructions
+- If you must track large artifacts, use Git LFS (not required here)
+
+## Data Context (Short)
+
+- race_results (SQLite): 225k+ rows (placements, times, points, stages)  
+- rider_infos.csv: 1,042 riders (height, weight, birthdate, country; includes pps/rdr dicts)
+- Key engineered features include rider skills (pps_*), rankings (rdr_*), rolling performance, age_at_race, race_tier
+
+## Development Notes
+
+- Use feature branches; do not commit to main directly
+- Pin dependencies in requirements.txt as they’re added
+- Notebooks are exploratory; scripts in phase2 are the main focus for the pipeline
+
+## For Teammates
+
+Helpful references:
+- Model selection map: https://scikit-learn.org/stable/machine_learning_map.html
+- Supervised overview: https://scikit-learn.org/stable/supervised_learning.html
+- Model evaluation: https://scikit-learn.org/stable/model_selection.html
+- Preprocessing: https://scikit-learn.org/stable/modules/preprocessing.html
+- Pipelines: https://scikit-learn.org/stable/modules/compose.html#pipeline
+- Friendly video series: https://www.youtube.com/@statquest
 
 **Tasks:**
 - Identify what “future race performance” means in measurable terms (e.g., race placement, finishing time, probability of finishing in top 10).  

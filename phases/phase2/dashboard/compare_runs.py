@@ -11,8 +11,9 @@ print("=" * 70)
 print("MODEL RUN COMPARISON")
 print("=" * 70)
 
-# Find all run directories
-runs_dir = Path("../model_runs")
+# Find all run directories - use path relative to this script
+script_dir = Path(__file__).parent
+runs_dir = script_dir.parent / "model_runs"
 if not runs_dir.exists():
     print("\nNo model_runs directory found. Run model_tuned.py first.")
     exit(0)
@@ -87,7 +88,8 @@ if all_comparisons:
     print("\n" + pivot.to_string())
     
     # Save consolidated comparison
-    all_comp_df.to_csv('model_runs/all_runs_comparison.csv', index=False)
-    print(f"\n✓ Saved consolidated comparison to: model_runs/all_runs_comparison.csv")
+    output_path = runs_dir / 'all_runs_comparison.csv'
+    all_comp_df.to_csv(output_path, index=False)
+    print(f"\n✓ Saved consolidated comparison to: {output_path}")
 
 print("\n" + "=" * 70)

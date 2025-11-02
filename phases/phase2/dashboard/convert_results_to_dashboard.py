@@ -6,9 +6,11 @@ Run this to create model_results.json for the dashboard.
 import pandas as pd
 import json
 import os
+from pathlib import Path
 
-# Load the CSV
-csv_path = '../model_runs/all_runs_comparison.csv'
+# Load the CSV - use path relative to this script
+script_dir = Path(__file__).parent
+csv_path = script_dir.parent / 'model_runs' / 'all_runs_comparison.csv'
 df = pd.read_csv(csv_path)
 
 # Filter for optimized thresholds only (these have the high precision)
@@ -81,8 +83,8 @@ for model_name in results:
     if model_name in feature_importance_mapping:
         results[model_name]['feature_importance'] = feature_importance_mapping[model_name]
 
-# Save to JSON
-output_path = 'model_results.json'
+# Save to JSON in the same directory as this script
+output_path = script_dir / 'model_results.json'
 with open(output_path, 'w') as f:
     json.dump(results, f, indent=2)
 

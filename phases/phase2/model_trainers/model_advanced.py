@@ -8,6 +8,7 @@ Advanced ML Pipeline - Final Push to 75%+ Precision
 
 import pandas as pd
 import numpy as np
+from pathlib import Path
 from sklearn.linear_model import LogisticRegression
 from sklearn.ensemble import RandomForestClassifier, GradientBoostingClassifier, VotingClassifier
 from sklearn.model_selection import GridSearchCV, StratifiedKFold
@@ -19,7 +20,6 @@ from sklearn.feature_selection import SelectKBest, mutual_info_classif
 import joblib
 import warnings
 from datetime import datetime
-import os
 
 # Try importing XGBoost and LightGBM
 try:
@@ -38,10 +38,14 @@ except ImportError:
 
 warnings.filterwarnings('ignore')
 
+# Get paths relative to script location
+script_dir = Path(__file__).parent
+phase2_dir = script_dir.parent
+
 # Create versioned run directory
 timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
-run_dir = f"model_runs/run_{timestamp}_advanced"
-os.makedirs(run_dir, exist_ok=True)
+run_dir = phase2_dir / 'model_runs' / f"run_{timestamp}_advanced"
+run_dir.mkdir(parents=True, exist_ok=True)
 
 print("=" * 70)
 print("ADVANCED ML MODEL TRAINING PIPELINE")
@@ -53,8 +57,10 @@ print(f"Output directory: {run_dir}/")
 # 1. LOAD DATA
 # ============================================================================
 print("\n[1/7] Loading preprocessed data...")
-X_train = pd.read_csv('../training_data/train_data.csv')
-X_test = pd.read_csv('../training_data/test_data.csv')
+train_path = phase2_dir / 'training_data' / 'train_data.csv'
+test_path = phase2_dir / 'training_data' / 'test_data.csv'
+X_train = pd.read_csv(train_path)
+X_test = pd.read_csv(test_path)
 
 y_train = X_train['is_top_10']
 X_train = X_train.drop('is_top_10', axis=1)
@@ -112,7 +118,7 @@ X_test_final = pd.DataFrame(X_test_selected, columns=selected_features)
 
 print(f"   Selected {K_BEST} features")
 pd.DataFrame({'feature': selected_features}).to_csv(
-    f'{run_dir}/selected_features.csv', index=False
+    run_dir / 'selected_features.csv', index=False
 )
 
 # ============================================================================
@@ -210,7 +216,7 @@ for name, config in model_configs.items():
         'Best_Params': str(grid_search.best_params_)
     })
 
-pd.DataFrame(tuning_results).to_csv(f'{run_dir}/tuning_results.csv', index=False)
+pd.DataFrame(tuning_results).to_csv(run_dir / 'tuning_results.csv', index=False)
 
 # ============================================================================
 # 5. CREATE ENSEMBLE
@@ -304,7 +310,7 @@ for name, model in trained_models.items():
     })
     
     # Save model
-    model_filename = f"{run_dir}/{name.replace(' ', '_').lower()}_model.pkl"
+    model_filename = run_dir / f"{name.replace(' ', '_').lower()}_model.pkl"
     joblib.dump(model, model_filename)
     
     threshold_info = {
@@ -312,7 +318,7 @@ for name, model in trained_models.items():
         'optimal_threshold': best_threshold,
         'timestamp': timestamp
     }
-    joblib.dump(threshold_info, f"{run_dir}/{name.replace(' ', '_').lower()}_threshold.pkl")
+    joblib.dump(threshold_info, run_dir / f"{name.replace(' ', '_').lower()}_threshold.pkl")
 
 # ============================================================================
 # 7. FINAL RESULTS
@@ -321,8 +327,8 @@ print("\n[7/7] Final results...")
 results_df = pd.DataFrame(results)
 print("\n" + results_df.to_string(index=False))
 
-results_df.to_csv(f'{run_dir}/model_comparison.csv', index=False)
-pd.DataFrame(threshold_results).to_csv(f'{run_dir}/optimal_thresholds.csv', index=False)
+results_df.to_csv(run_dir / 'model_comparison.csv', index=False)
+pd.DataFrame(threshold_results).to_csv(run_dir / 'optimal_thresholds.csv', index=False)
 
 best_result = results_df[results_df['Threshold'].str.contains('Optimized')].sort_values(
     'Precision', ascending=False
@@ -356,4 +362,4 @@ metadata = {
     'best_precision': best_precision,
     'target_achieved': best_precision >= 0.75
 }
-pd.DataFrame([metadata]).to_csv(f'{run_dir}/run_metadata.csv', index=False)
+pd.DataFrame([metadata]).to_csv(run_dir / 'run_metadata.csv', index=False)

@@ -12,12 +12,16 @@ from datetime import datetime
 # =========================
 # Load Data
 # =========================
-# folder where the script is located
-script_dir = os.path.dirname(os.path.abspath(__file__))
+from pathlib import Path
 
-# correct path to DB and CSV
-db_path = os.path.join(script_dir, "..", "data", "cycling_big.db")
-rider_infos_path = os.path.join(script_dir, "..", "data", "data", "rider_infos.csv")
+# Get script directory and project root
+script_dir = Path(__file__).parent
+phase2_dir = script_dir.parent
+project_root = phase2_dir.parent.parent
+
+# Paths to data files
+db_path = project_root / "data" / "cycling_big.db"
+rider_infos_path = project_root / "data" / "data" / "rider_infos.csv"
 
 # load data
 conn = sqlite3.connect(db_path)
@@ -267,7 +271,8 @@ print(f"Date range: {df_clean['Date'].min()} to {df_clean['Date'].max()}")
 # =========================
 # Save processed data
 # =========================
-import os
-os.makedirs('../processed_data', exist_ok=True)
-df_clean.to_csv('processed_data/race_data_processed.csv',index=False)
-print("Processed data saved!")
+output_dir = phase2_dir / 'processed_data'
+output_dir.mkdir(parents=True, exist_ok=True)
+output_path = output_dir / 'race_data_processed.csv'
+df_clean.to_csv(output_path, index=False)
+print(f"Processed data saved to: {output_path}")

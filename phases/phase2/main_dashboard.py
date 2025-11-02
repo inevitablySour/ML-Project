@@ -57,7 +57,6 @@ def run_script(script_path, description):
     try:
         result = subprocess.run(
             [sys.executable, script_path],
-            cwd=os.path.dirname(script_path) or '.',
             capture_output=False,
             text=True
         )
@@ -100,6 +99,7 @@ def data_preparation_menu():
     
     # Check for required data files
     print_section("Checking Data Files")
+    # Paths relative to phases/phase2/
     db_exists = check_file_exists("../../data/cycling_big.db", "SQLite database")
     csv_exists = check_file_exists("../../data/data/rider_infos.csv", "Rider info CSV")
     
@@ -220,7 +220,7 @@ def comparison_dashboard_menu():
             subprocess.run([
                 sys.executable, "-m", "streamlit", "run", 
                 "dashboard/model_dashboard.py"
-            ])
+            ], cwd=os.getcwd())
         except KeyboardInterrupt:
             print_info("\nDashboard closed")
     elif choice == '4':
@@ -235,7 +235,7 @@ def comparison_dashboard_menu():
                         subprocess.run([
                             sys.executable, "-m", "streamlit", "run", 
                             "dashboard/model_dashboard.py"
-                        ])
+                        ], cwd=os.getcwd())
                     except KeyboardInterrupt:
                         print_info("\nDashboard closed")
     elif choice == 'b':
@@ -247,7 +247,7 @@ def show_project_status():
     """Display current project status"""
     print_header("PROJECT STATUS")
     
-    # Data files
+    # Data files (all relative to phases/phase2/ directory)
     print_section("Data Files")
     check_file_exists("../../data/cycling_big.db", "Raw SQLite database")
     check_file_exists("../../data/data/rider_infos.csv", "Rider information CSV")

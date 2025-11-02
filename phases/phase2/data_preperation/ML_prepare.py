@@ -5,6 +5,7 @@ Prepares race_data_processed.csv for machine learning model training
 
 import pandas as pd
 import numpy as np
+from pathlib import Path
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import StandardScaler
 from imblearn.over_sampling import SMOTE
@@ -15,11 +16,16 @@ print("="*70)
 print("ML PREPROCESSING PIPELINE")
 print("="*70)
 
+# Get paths relative to script location
+script_dir = Path(__file__).parent
+phase2_dir = script_dir.parent
+
 # ============================================================================
 # 1. LOAD DATA
 # ============================================================================
 print("\n[1/7] Loading processed data...")
-df = pd.read_csv('../processed_data/race_data_processed.csv')
+input_path = phase2_dir / 'processed_data' / 'race_data_processed.csv'
+df = pd.read_csv(input_path)
 print(f"   Loaded: {df.shape[0]:,} rows × {df.shape[1]} columns")
 
 initial_rows = len(df)
@@ -100,7 +106,7 @@ leakage_found = [col for col in leakage_cols if col in df.columns]
 df_features = df.drop(columns=cols_to_drop_now)
 
 if leakage_found:
-    print(f"   ⚠️  Removed DATA LEAKAGE features: {leakage_found}")
+    print(f"   Removed DATA LEAKAGE features: {leakage_found}")
 print(f"   Dropped other columns: {[c for c in cols_to_drop_now if c not in leakage_found]}")
 print(f"   Remaining columns: {df_features.shape[1]} (Date kept for temporal split)")
 print(f"\n   Kept historical Pnt features (no leakage):")
@@ -236,28 +242,34 @@ print("\n" + "="*70)
 print("SAVING ML-READY DATA")
 print("="*70)
 
-import os
-os.makedirs('../processed_data', exist_ok=True)
+import joblib
+
+# Create output directory
+output_dir = phase2_dir / 'training_data'
+output_dir.mkdir(parents=True, exist_ok=True)
 
 # Save train set (balanced and scaled)
 X_train_scaled['is_top_10'] = y_train_balanced.values
-X_train_scaled.to_csv('training_data/train_data.csv', index=False)
-print(f"Saved: training_data/train_data.csv ({len(X_train_scaled):,} rows)")
+train_path = output_dir / 'train_data.csv'
+X_train_scaled.to_csv(train_path, index=False)
+print(f"Saved: {train_path} ({len(X_train_scaled):,} rows)")
 
 # Save test set (scaled, NOT balanced)
 X_test_scaled['is_top_10'] = y_test.values
-X_test_scaled.to_csv('training_data/test_data.csv', index=False)
-print(f"Saved: training_data/test_data.csv ({len(X_test_scaled):,} rows)")
+test_path = output_dir / 'test_data.csv'
+X_test_scaled.to_csv(test_path, index=False)
+print(f"Saved: {test_path} ({len(X_test_scaled):,} rows)")
 
 # Save feature names
 feature_names = X_train.columns.tolist()
-pd.DataFrame({'feature': feature_names}).to_csv('../training_data/feature_names.csv', index=False)
-print(f"Saved: training_data/feature_names.csv ({len(feature_names)} features)")
+features_path = output_dir / 'feature_names.csv'
+pd.DataFrame({'feature': feature_names}).to_csv(features_path, index=False)
+print(f"Saved: {features_path} ({len(feature_names)} features)")
 
 # Save scaler for future use
-import joblib
-joblib.dump(scaler, '../training_data/scaler.pkl')
-print(f"Saved: training_data/scaler.pkl")
+scaler_path = output_dir / 'scaler.pkl'
+joblib.dump(scaler, scaler_path)
+print(f"Saved: {scaler_path}")
 
 # ============================================================================
 # 9. SUMMARY REPORT
