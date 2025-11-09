@@ -1,21 +1,22 @@
 {
   "Logistic Regression": {
     "overall": {
-      "precision": 0.28,
+      "precision": 0.3106796116504854,
       "recall": 0.1543762922122674,
-      "f1": 0.1990226565970679,
-      "accuracy": 0.8138,
-      "roc_auc": 0.7740215864085701,
-      "threshold": 0.871
+      "f1": 0.2062615101289134,
+      "accuracy": 0.9391672547635851,
+      "roc_auc": 0.8027636474416263,
+      "threshold": 0.548,
+      "threshold_label": "Optimized (0.548)"
     },
     "confusion_matrix": [
       [
-        7907,
-        593
+        26392,
+        497
       ],
       [
-        1269,
-        231
+        1227,
+        224
       ]
     ],
     "feature_importance": {
@@ -30,18 +31,19 @@
       "precision": 0.749271137026239,
       "recall": 0.1771192281185389,
       "f1": 0.2865105908584169,
-      "accuracy": 0.8677,
+      "accuracy": 0.954834156669019,
       "roc_auc": 0.822796473000432,
-      "threshold": 0.773
+      "threshold": 0.773,
+      "threshold_label": "Optimized (0.773)"
     },
     "confusion_matrix": [
       [
-        8412,
-        88
+        26804,
+        85
       ],
       [
-        1235,
-        265
+        1195,
+        256
       ]
     ],
     "feature_importance": {
@@ -53,21 +55,22 @@
   },
   "Gradient Boosting": {
     "overall": {
-      "precision": 0.7493188010899182,
-      "recall": 0.1895244658855961,
-      "f1": 0.3025302530253025,
-      "accuracy": 0.8689,
-      "roc_auc": 0.8237050119439647,
-      "threshold": 0.887
+      "precision": 0.7514619883040936,
+      "recall": 0.1771192281185389,
+      "f1": 0.286670384829894,
+      "accuracy": 0.9548694424841214,
+      "roc_auc": 0.8444691540039571,
+      "threshold": 0.405,
+      "threshold_label": "Optimized (0.405)"
     },
     "confusion_matrix": [
       [
-        8405,
-        95
+        26805,
+        84
       ],
       [
-        1216,
-        284
+        1195,
+        256
       ]
     ],
     "feature_importance": {
@@ -79,21 +82,22 @@
   },
   "Gradient Boosting Pro": {
     "overall": {
-      "precision": 0.7506234413965087,
-      "recall": 0.2074431426602343,
-      "f1": 0.3250539956803456,
-      "accuracy": 0.8708,
-      "roc_auc": 0.827332119316672,
-      "threshold": 0.863
+      "precision": 0.8305084745762712,
+      "recall": 0.1688490696071674,
+      "f1": 0.2806414662084765,
+      "accuracy": 0.955681016231475,
+      "roc_auc": 0.8377238210260682,
+      "threshold": 0.5,
+      "threshold_label": "Default (0.5)"
     },
     "confusion_matrix": [
       [
-        8397,
-        103
+        26840,
+        49
       ],
       [
-        1189,
-        311
+        1207,
+        244
       ]
     ],
     "feature_importance": {
@@ -108,18 +112,19 @@
       "precision": 0.75,
       "recall": 0.1798759476223294,
       "f1": 0.2901612006670372,
-      "accuracy": 0.868,
+      "accuracy": 0.954940014114326,
       "roc_auc": 0.8141724462917579,
-      "threshold": 0.781
+      "threshold": 0.781,
+      "threshold_label": "Optimized (0.781)"
     },
     "confusion_matrix": [
       [
-        8411,
-        89
+        26803,
+        86
       ],
       [
-        1231,
-        269
+        1191,
+        260
       ]
     ],
     "feature_importance": {
@@ -131,21 +136,22 @@
   },
   "XGBoost": {
     "overall": {
-      "precision": 0.7441860465116279,
-      "recall": 0.1543762922122674,
-      "f1": 0.2557077625570776,
-      "accuracy": 0.8652,
-      "roc_auc": 0.8161711678911534,
-      "threshold": 0.992
+      "precision": 0.75,
+      "recall": 0.1571330117160579,
+      "f1": 0.2598290598290598,
+      "accuracy": 0.9541637261820748,
+      "roc_auc": 0.805905030249304,
+      "threshold": 0.86,
+      "threshold_label": "Optimized (0.860)"
     },
     "confusion_matrix": [
       [
-        8421,
-        79
+        26813,
+        76
       ],
       [
-        1269,
-        231
+        1223,
+        228
       ]
     ],
     "feature_importance": {
@@ -157,21 +163,22 @@
   },
   "LightGBM": {
     "overall": {
-      "precision": 0.721875,
-      "recall": 0.1592005513439007,
-      "f1": 0.2608695652173913,
-      "accuracy": 0.8647,
-      "roc_auc": 0.8201525535499736,
-      "threshold": 0.988
+      "precision": 0.7492957746478873,
+      "recall": 0.1833218470020675,
+      "f1": 0.2945736434108527,
+      "accuracy": 0.955045871559633,
+      "roc_auc": 0.8148026759012515,
+      "threshold": 0.854,
+      "threshold_label": "Optimized (0.854)"
     },
     "confusion_matrix": [
       [
-        8409,
-        91
+        26801,
+        88
       ],
       [
-        1262,
-        238
+        1186,
+        265
       ]
     ],
     "feature_importance": {
@@ -186,18 +193,19 @@
       "precision": 0.75,
       "recall": 0.2088215024121295,
       "f1": 0.3266846361185984,
-      "accuracy": 0.8709,
+      "accuracy": 0.9559280169371912,
       "roc_auc": 0.8301498523462423,
-      "threshold": 0.824
+      "threshold": 0.824,
+      "threshold_label": "Optimized (0.824)"
     },
     "confusion_matrix": [
       [
-        8396,
-        104
+        26789,
+        100
       ],
       [
-        1187,
-        313
+        1149,
+        302
       ]
     ],
     "feature_importance": {

@@ -26,12 +26,26 @@ print("="*70)
 print("ML MODEL TRAINING PIPELINE")
 print("="*70)
 
+# Dataset selection
+print("\nWhich dataset would you like to train on?")
+print("  1) Original (from race_data_processed.csv)")
+print("  2) Enhanced (from race_data_processed_enhanced.csv)")
+
+choice = input("\nEnter your choice (1 or 2): ").strip()
+
+if choice == "2":
+    dataset_suffix = "_enhanced"
+    print("\n✓ Using ENHANCED training data with Tier 1-2 features")
+else:
+    dataset_suffix = ""
+    print("\n✓ Using ORIGINAL training data")
+
 # ============================================================================
 # 1. LOAD DATA
 # ============================================================================
 print("\n[1/5] Loading preprocessed data...")
-train_path = phase2_dir / 'training_data' / 'train_data.csv'
-test_path = phase2_dir / 'training_data' / 'test_data.csv'
+train_path = phase2_dir / 'training_data' / f'train_data{dataset_suffix}.csv'
+test_path = phase2_dir / 'training_data' / f'test_data{dataset_suffix}.csv'
 X_train = pd.read_csv(train_path)
 X_test = pd.read_csv(test_path)
 

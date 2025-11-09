@@ -21,10 +21,26 @@ script_dir = Path(__file__).parent
 phase2_dir = script_dir.parent
 
 # ============================================================================
+# DATASET SELECTION
+# ============================================================================
+print("\nWhich dataset would you like to use?")
+print("  1) Original (race_data_processed.csv)")
+print("  2) Enhanced with new features (race_data_processed_enhanced.csv)")
+
+choice = input("\nEnter your choice (1 or 2): ").strip()
+
+if choice == "2":
+    dataset_name = 'race_data_processed_enhanced.csv'
+    print("\n✓ Using ENHANCED dataset with Tier 1-2 features")
+else:
+    dataset_name = 'race_data_processed.csv'
+    print("\n✓ Using ORIGINAL dataset")
+
+# ============================================================================
 # 1. LOAD DATA
 # ============================================================================
 print("\n[1/7] Loading processed data...")
-input_path = phase2_dir / 'processed_data' / 'race_data_processed.csv'
+input_path = phase2_dir / 'processed_data' / dataset_name
 df = pd.read_csv(input_path)
 print(f"   Loaded: {df.shape[0]:,} rows × {df.shape[1]} columns")
 
@@ -197,20 +213,21 @@ print(f"   Train positive class: {y_train.mean()*100:.2f}%")
 print(f"   Test positive class: {y_test.mean()*100:.2f}%")
 
 # ============================================================================
-# 6. HANDLE CLASS IMBALANCE WITH SMOTE
+# 6. HANDLE CLASS IMBALANCE - SKIPPED (use class_weight instead)
 # ============================================================================
-print("\n[6/7] Applying SMOTE to balance training data...")
+print("\n[6/7] Class imbalance handling...")
 
-print(f"   Before SMOTE - Train distribution:")
+print(f"   Train distribution (keeping natural imbalance):")
 print(f"      Class 0: {(y_train==0).sum():,} ({(y_train==0).sum()/len(y_train)*100:.1f}%)")
 print(f"      Class 1: {(y_train==1).sum():,} ({(y_train==1).sum()/len(y_train)*100:.1f}%)")
 
-smote = SMOTE(random_state=42, k_neighbors=5)
-X_train_balanced, y_train_balanced = smote.fit_resample(X_train, y_train)
+# Don't use SMOTE - it creates distribution mismatch with test set
+# Instead, rely on class_weight='balanced' in models
+X_train_balanced = X_train
+y_train_balanced = y_train
 
-print(f"   After SMOTE - Train distribution:")
-print(f"      Class 0: {(y_train_balanced==0).sum():,} ({(y_train_balanced==0).sum()/len(y_train_balanced)*100:.1f}%)")
-print(f"      Class 1: {(y_train_balanced==1).sum():,} ({(y_train_balanced==1).sum()/len(y_train_balanced)*100:.1f}%)")
+print(f"   ℹ️  Not using SMOTE - models will use class_weight='balanced' instead")
+print(f"   This ensures train/test distribution match for better generalization")
 
 # ============================================================================
 # 7. FEATURE SCALING
@@ -248,21 +265,24 @@ import joblib
 output_dir = phase2_dir / 'training_data'
 output_dir.mkdir(parents=True, exist_ok=True)
 
+# Determine suffix for file names
+file_suffix = '_enhanced' if 'enhanced' in dataset_name else ''
+
 # Save train set (balanced and scaled)
 X_train_scaled['is_top_10'] = y_train_balanced.values
-train_path = output_dir / 'train_data.csv'
+train_path = output_dir / f'train_data{file_suffix}.csv'
 X_train_scaled.to_csv(train_path, index=False)
 print(f"Saved: {train_path} ({len(X_train_scaled):,} rows)")
 
 # Save test set (scaled, NOT balanced)
 X_test_scaled['is_top_10'] = y_test.values
-test_path = output_dir / 'test_data.csv'
+test_path = output_dir / f'test_data{file_suffix}.csv'
 X_test_scaled.to_csv(test_path, index=False)
 print(f"Saved: {test_path} ({len(X_test_scaled):,} rows)")
 
 # Save feature names
 feature_names = X_train.columns.tolist()
-features_path = output_dir / 'feature_names.csv'
+features_path = output_dir / f'feature_names{file_suffix}.csv'
 pd.DataFrame({'feature': feature_names}).to_csv(features_path, index=False)
 print(f"Saved: {features_path} ({len(feature_names)} features)")
 
@@ -271,6 +291,14 @@ scaler_path = output_dir / 'scaler.pkl'
 joblib.dump(scaler, scaler_path)
 print(f"Saved: {scaler_path}")
 
+# Save dataset info
+dataset_info_path = output_dir / 'dataset_info.txt'
+with open(dataset_info_path, 'w') as f:
+    f.write(f"Dataset Used: {dataset_name}\n")
+    f.write(f"Timestamp: {pd.Timestamp.now()}\n")
+    f.write(f"Total Features: {len(feature_names)}\n")
+print(f"Saved: {dataset_info_path}")
+
 # ============================================================================
 # 9. SUMMARY REPORT
 # ============================================================================
@@ -278,11 +306,11 @@ print("\n" + "="*70)
 print("FINAL SUMMARY")
 print("="*70)
 print(f"""
-Training Data (BALANCED):
+Training Data (NATURAL IMBALANCE):
   • Samples: {len(X_train_scaled):,}
   • Features: {len(feature_names)}
-  • Positive class: {(y_train_balanced==1).sum():,} (50.0%)
-  • Negative class: {(y_train_balanced==0).sum():,} (50.0%)
+  • Positive class: {(y_train_balanced==1).sum():,} ({(y_train_balanced==1).sum()/len(y_train_balanced)*100:.1f}%)
+  • Negative class: {(y_train_balanced==0).sum():,} ({(y_train_balanced==0).sum()/len(y_train_balanced)*100:.1f}%)
 
 Test Data (ORIGINAL DISTRIBUTION):
   • Samples: {len(X_test_scaled):,}

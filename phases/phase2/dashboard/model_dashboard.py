@@ -79,6 +79,7 @@ if not selected_metrics:
 
 # Overall Performance Comparison
 st.header("Overall Performance Metrics")
+st.info("**Note:** Metrics shown represent the best performance across all tested thresholds (default 0.5 and optimized). Each model may use a different threshold to maximize its primary metric while maintaining recall > 15%.")
 
 if selected_models:
     # Create comparison dataframe
@@ -101,9 +102,19 @@ if selected_models:
         
         for idx, metric in enumerate(selected_metrics):
             with cols[idx]:
-                st.metric(f"Best {metric}", 
-                          f"{df_comparison[metric].max():.2%}",
-                          df_comparison.loc[df_comparison[metric].idxmax(), 'Model'])
+                best_idx = df_comparison[metric].idxmax()
+                best_model = df_comparison.loc[best_idx, 'Model']
+                best_value = df_comparison.loc[best_idx, metric]
+                
+                # Get threshold info
+                threshold_info = results[best_model]['overall'].get('threshold_label', 'Unknown')
+                
+                st.metric(
+                    f"Best {metric}", 
+                    f"{best_value:.2%}",
+                    f"↑ {best_model}"
+                )
+                st.caption(f"Threshold: {threshold_info}")
     
     # Bar chart comparison (only selected metrics)
     if selected_metrics:

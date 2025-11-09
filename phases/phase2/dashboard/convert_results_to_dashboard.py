@@ -13,34 +13,44 @@ script_dir = Path(__file__).parent
 csv_path = script_dir.parent / 'model_runs' / 'all_runs_comparison.csv'
 df = pd.read_csv(csv_path)
 
-# Filter for optimized thresholds only (these have the high precision)
-df_optimized = df[df['Threshold'].str.contains('Optimized', na=False)].copy()
-
-# Create results dictionary
+# Create results dictionary - pick BEST performance across ALL thresholds
 results = {}
 
-for _, row in df_optimized.iterrows():
-    model_name = row['Model']
+# Group by model and find best threshold for each metric
+for model_name in df['Model'].unique():
+    model_df = df[df['Model'] == model_name].copy()
     
-    # Skip if we already have this model (take first occurrence)
+    # Find best configuration: highest precision with recall > 0.15
+    valid_configs = model_df[model_df['Recall'] > 0.15]
+    
+    if len(valid_configs) == 0:
+        # If no config has recall > 0.15, just take best precision
+        valid_configs = model_df
+    
+    best_row = valid_configs.loc[valid_configs['Precision'].idxmax()]
+    
+    # Skip if we already processed this model
     if model_name in results:
         continue
     
     # Extract threshold value
-    threshold = float(row['Threshold'].split('(')[1].strip(')'))
+    threshold_str = best_row['Threshold']
+    if '(' in threshold_str:
+        threshold = float(threshold_str.split('(')[1].strip(')'))
+    else:
+        threshold = 0.5
     
     # For confusion matrix, we need to estimate based on precision/recall
-    # This is approximate - ideally load from actual model files
-    # Assuming ~10,000 test samples (adjust based on your actual test size)
-    total_samples = 10000
-    positive_class_ratio = 0.15  # Approximate based on cycling data
+    # Using actual test set size from your data
+    total_samples = 28340  # Your actual test set size
+    positive_class_ratio = 0.0512  # 5.12% positive class in test set
     
     actual_positives = int(total_samples * positive_class_ratio)
     actual_negatives = total_samples - actual_positives
     
     # Calculate TP, FP, TN, FN from precision and recall
-    recall = row['Recall']
-    precision = row['Precision']
+    recall = best_row['Recall']
+    precision = best_row['Precision']
     
     tp = int(actual_positives * recall)
     fn = actual_positives - tp
@@ -57,10 +67,11 @@ for _, row in df_optimized.iterrows():
         'overall': {
             'precision': precision,
             'recall': recall,
-            'f1': row['F1-Score'],
+            'f1': best_row['F1-Score'],
             'accuracy': (tp + tn) / total_samples,
-            'roc_auc': row['ROC-AUC'],
-            'threshold': threshold
+            'roc_auc': best_row['ROC-AUC'],
+            'threshold': threshold,
+            'threshold_label': threshold_str  # Store original label for display
         },
         'confusion_matrix': [[tn, fp], [fn, tp]],
         'feature_importance': {}  # Will be empty unless we load from model files

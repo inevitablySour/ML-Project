@@ -109,32 +109,38 @@ def data_preparation_menu():
     
     # Data preparation options
     options = {
-        '1': 'Process raw data (process_data.py)',
-        '2': 'Prepare ML-ready data (ML_prepare.py)',
-        '3': 'Validate for data leakage (validate_no_leakage.py)',
-        '4': 'Run full pipeline (all steps)',
+        '1': 'Process raw data (process_data.py) - Original',
+        '2': 'Process with enhanced features (process_data_enhanced.py) ⭐ NEW',
+        '3': 'Prepare ML-ready data (ML_prepare.py) - Select dataset at runtime',
+        '4': 'Validate for data leakage (validate_no_leakage.py)',
+        '5': 'Run full pipeline (all steps)',
         'b': 'Back to main menu'
     }
     
     choice = show_menu("Data Preparation Options", options)
     
     if choice == '1':
-        run_script("data_preperation/process_data.py", "Process raw data")
+        run_script("data_preperation/process_data.py", "Process raw data (Original)")
     elif choice == '2':
-        if check_file_exists("processed_data/race_data_processed.csv", "Processed data"):
-            run_script("data_preperation/ML_prepare.py", "Prepare ML-ready data")
-        else:
-            print_error("Processed data not found. Run option 1 first.")
+        run_script("data_preperation/process_data_enhanced.py", "Process raw data (Enhanced with Tier 1-2 features)")
     elif choice == '3':
-        if check_file_exists("training_data/train_data.csv", "Training data"):
+        print_info("Note: You will be prompted to select dataset (original or enhanced)")
+        run_script("data_preperation/ML_prepare.py", "Prepare ML-ready data")
+    elif choice == '4':
+        if check_file_exists("training_data/train_data.csv", "Training data") or check_file_exists("training_data/train_data_enhanced.csv", "Enhanced training data"):
             run_script("data_preperation/validate_no_leakage.py", "Validate data")
         else:
-            print_error("Training data not found. Run options 1 and 2 first.")
-    elif choice == '4':
+            print_error("Training data not found. Run options 1-3 first.")
+    elif choice == '5':
         print_info("Running full data preparation pipeline...")
-        if run_script("data_preperation/process_data.py", "Process raw data"):
-            if run_script("data_preperation/ML_prepare.py", "Prepare ML-ready data"):
-                run_script("data_preperation/validate_no_leakage.py", "Validate data")
+        print_info("Step 1: Processing original data...")
+        if run_script("data_preperation/process_data.py", "Process raw data (Original)"):
+            print_info("Step 2: Processing enhanced data...")
+            if run_script("data_preperation/process_data_enhanced.py", "Process raw data (Enhanced)"):
+                print_info("Step 3: Preparing ML data (you'll select dataset)...")
+                if run_script("data_preperation/ML_prepare.py", "Prepare ML-ready data"):
+                    print_info("Step 4: Validating for leakage...")
+                    run_script("data_preperation/validate_no_leakage.py", "Validate data")
     elif choice == 'b':
         return
     else:
@@ -155,8 +161,8 @@ def model_training_menu():
     
     # Model training options
     options = {
-        '1': 'Train baseline models (model.py)',
-        '2': 'Train tuned models with optimization (model_tuned.py) ⭐ RECOMMENDED',
+        '1': 'Train baseline models (model.py) - Dataset selection at runtime',
+        '2': 'Train tuned models with optimization (model_tuned.py) ⭐ RECOMMENDED - Dataset selection at runtime',
         '3': 'Train advanced models with XGBoost (model_advanced.py)',
         '4': 'Run all training pipelines',
         'b': 'Back to main menu'
@@ -165,8 +171,10 @@ def model_training_menu():
     choice = show_menu("Model Training Options", options)
     
     if choice == '1':
+        print_info("Note: You will be prompted to select dataset (original or enhanced)")
         run_script("model_trainers/model.py", "Train baseline models")
     elif choice == '2':
+        print_info("Note: You will be prompted to select dataset (original or enhanced)")
         run_script("model_trainers/model_tuned.py", "Train tuned models")
     elif choice == '3':
         print_warning("Note: Requires xgboost and lightgbm packages")
@@ -175,6 +183,7 @@ def model_training_menu():
             run_script("model_trainers/model_advanced.py", "Train advanced models")
     elif choice == '4':
         print_info("Running all training pipelines (this will take time)...")
+        print_info("You will be prompted to select dataset for each training step.")
         run_script("model_trainers/model.py", "Train baseline models")
         run_script("model_trainers/model_tuned.py", "Train tuned models")
         print_warning("Skipping advanced models (optional). Run separately if needed.")

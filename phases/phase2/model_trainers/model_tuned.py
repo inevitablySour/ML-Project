@@ -21,6 +21,7 @@ from sklearn.feature_selection import SelectKBest, mutual_info_classif
 import joblib
 import warnings
 from datetime import datetime
+from tqdm import tqdm
 warnings.filterwarnings('ignore')
 
 # Get paths relative to script location
@@ -39,11 +40,27 @@ print(f"\nRun ID: {timestamp}")
 print(f"Output directory: {run_dir}/")
 
 # ============================================================================
+# DATASET SELECTION
+# ============================================================================
+print("\nWhich dataset would you like to train on?")
+print("  1) Original (from race_data_processed.csv)")
+print("  2) Enhanced (from race_data_processed_enhanced.csv)")
+
+choice = input("\nEnter your choice (1 or 2): ").strip()
+
+if choice == "2":
+    dataset_suffix = "_enhanced"
+    print("\n✓ Using ENHANCED training data with Tier 1-2 features")
+else:
+    dataset_suffix = ""
+    print("\n✓ Using ORIGINAL training data")
+
+# ============================================================================
 # 1. LOAD DATA
 # ============================================================================
 print("\n[1/6] Loading preprocessed data...")
-train_path = phase2_dir / 'training_data' / 'train_data.csv'
-test_path = phase2_dir / 'training_data' / 'test_data.csv'
+train_path = phase2_dir / 'training_data' / f'train_data{dataset_suffix}.csv'
+test_path = phase2_dir / 'training_data' / f'test_data{dataset_suffix}.csv'
 X_train = pd.read_csv(train_path)
 X_test = pd.read_csv(test_path)
 
@@ -139,7 +156,8 @@ model_configs = {
 trained_models = {}
 tuning_results = []
 
-for name, config in model_configs.items():
+print("\n   Progress:")
+for name, config in tqdm(list(model_configs.items()), desc="   Models", ncols=80):
     print(f"\n   Tuning {name}...")
     
     grid_search = GridSearchCV(
@@ -176,7 +194,8 @@ print("\n[4/6] Evaluating models with threshold optimization...")
 results = []
 threshold_results = []
 
-for name, model in trained_models.items():
+print("\n   Progress:")
+for name, model in tqdm(list(trained_models.items()), desc="   Evaluating", ncols=80):
     print(f"\n   Evaluating {name}...")
     
     # Get probability predictions
@@ -337,6 +356,7 @@ print("=" * 70)
 # Save run metadata
 metadata = {
     'run_id': timestamp,
+    'dataset': 'enhanced' if dataset_suffix == '_enhanced' else 'original',
     'train_samples': len(X_train_final),
     'test_samples': len(X_test_final),
     'features_used': len(selected_features),
